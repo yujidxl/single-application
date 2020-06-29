@@ -1,0 +1,19 @@
+{
+  "name": "single-application",
+  "version": "1.0.0",
+  "description": "接口爬虫",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "iconv-lite": "^0.6.1",
+    "koa": "^2.9.0",
+    "koa-gzip": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start ./reptile/app.js --watch"
+  },
+  "author": "dengxiaolong",
+  "license": "ISC"
+}
