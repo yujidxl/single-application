@@ -2,7 +2,8 @@ const sequelize  = require('../mysql/init');
 const { DataTypes } = require('sequelize');
 
 !async function() {
-  await sequelize.sync({ force: true });
+  // await sequelize.sync({ force: true });
+  await sequelize.sync({ alter: true });
   console.log("所有模型均已成功同步.");
 }();
 
@@ -18,6 +19,10 @@ module.exports = sequelize.define('BookList', {
   },
   book_author: {
     type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  book_img: {
+    type: DataTypes.STRING(300),
     allowNull: false,
   },
   book_description: {
