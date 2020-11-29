@@ -1,11 +1,11 @@
 const sequelize  = require('../mysql/init');
 const { DataTypes } = require('sequelize');
 
-!async function() {
-  await sequelize.sync({ force: true });
-  // await sequelize.sync({ alter: true });
-  console.log("所有章节详情模型均已同步.");
-}();
+// !async function() {
+//   await sequelize.sync({ force: true });
+//   // await sequelize.sync({ alter: true });
+//   console.log("所有章节详情模型均已同步.");
+// }();
 
 module.exports = sequelize.define('ChapterDetail', {
   chapter_detail_id: {

@@ -1,8 +1,24 @@
 const Koa = require('koa');
+const KoaBody = require('koa-body');
+const KoaJwt = require('koa-jwt');
+const router = require('../router');
 const app = new Koa();
 
-app.use(async ctx => {
-  ctx.body = 'Hello World!';
+app.use(KoaBody());
+app.use(async (ctx, next) => {
+  return next().catch((err) => {
+    if (401 == err.status) {
+      ctx.status = 401;
+      ctx.body = {
+        code: -401,
+        msg: '接口校验失败',
+      };
+    } else {
+      throw err;
+    }
+  });
 });
+app.use(KoaJwt({ secret: 'dengxiaolong' }).unless({ path: [/^\/login\/to/] }));
+app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(3000);

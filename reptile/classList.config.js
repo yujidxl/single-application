@@ -1,6 +1,6 @@
 const book_list_config = {
   baseUrl: 'https://www.77xsw.la/fenlei1/',
-  getNums: 1
+  getNums: 2
 }
 
 const chapter_list_config = {

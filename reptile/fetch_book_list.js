@@ -1,24 +1,28 @@
 const request = require('superagent');
+const delay = require('delay');
+const Queue = require('p-queue');
 require('superagent-charset')(request);
 const BookList = require('../model/book_list');
 const Cheerio = require('cheerio');
 const { book_list_config } = require('./classList.config');
 const getChapterList = require('./fetch_chapter_list');
+const log = require('../logger');
+const useragent = require('../userAgent');
 
 (async () => {
   try {
     let { baseUrl, getNums } = book_list_config;
     const max = getNums;
+    const books = [];
     while(getNums>0) {
       getNums--;
       const res = await request.get(`${baseUrl}${max-getNums}.html`)
+        .set('User-Agent', useragent)
         .charset('gbk')
         .buffer(true);
-      const books = [];
       const $ = Cheerio.load(res.text || '');
       const $books = $('.book-coverlist>.row');
       $books.each(async (index, item) => {
-        if (index > 1) return;
         const book_img = $(item).children('.col-md-5').find('.thumbnail').attr('src');
         const book_name = $(item).children('.col-md-7').find('.caption>h4>a').text();
         const book_author = $(item).children('.col-md-7').find('small.text-muted').text();
@@ -31,7 +35,6 @@ const getChapterList = require('./fetch_chapter_list');
           .attr('href')
           .split('/');
         const chapter_id = chapter_id_arr[chapter_id_arr.length-2];
-        await getChapterList(chapter_id);
         books.push({
           book_name,
           book_author,
@@ -40,11 +43,12 @@ const getChapterList = require('./fetch_chapter_list');
           chapter_id,
         });
       });
-      await BookList.bulkCreate(books);
-      console.log('书籍列表同步成功');
     }
-    
+    await BookList.destroy({truncate: true});
+    await BookList.bulkCreate(books);
+    await getChapterList(books);
+    log.debug('书籍数据已全部入库'); 
   } catch (err) {
-    console.log(err);
+    log.error(`书籍入库失败：${err}`);
   }
 })();
