@@ -1,9 +1,15 @@
 const Koa = require('koa');
 const KoaBody = require('koa-body');
 const KoaJwt = require('koa-jwt');
+const cors = require('koa2-cors');
 const router = require('../router');
 const app = new Koa();
 
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 app.use(KoaBody());
 app.use(async (ctx, next) => {
   return next().catch((err) => {

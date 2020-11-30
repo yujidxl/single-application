@@ -106,7 +106,7 @@ router.post('/to', async (ctx, next) => {
     return;
   }
   const token = jwt.sign({ email, password }, 'dengxiaolong', {
-    expiresIn: '20s',
+    expiresIn: '1h',
   });
   ctx.body = {
     code: 0,
