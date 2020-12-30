@@ -1,7 +1,8 @@
 const { Sequelize }  = require('sequelize');
+const config = require('../config');
 
 const sequelize = new Sequelize('Book', 'root', 'root', {
-  host: '127.0.0.1',
+  host: config.mysqlHost,
   port: 3306,
   dialect: 'mysql',
   define: {

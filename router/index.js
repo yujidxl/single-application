@@ -89,6 +89,7 @@ router.patch('/:id', async (ctx, next) => {
 // 登录接口
 router.post('/to', async (ctx, next) => {
   const { email, password } = ctx.request.body;
+  console.log(`已调用登录接口，调用方为:\n 用户名： ${email} \n 密码：${password}`);
   const finded = await User.findOne({ where: { email } });
   if (!finded) {
     ctx.body = {
