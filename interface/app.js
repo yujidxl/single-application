@@ -24,7 +24,11 @@ app.use(async (ctx, next) => {
     }
   });
 });
-app.use(KoaJwt({ secret: 'dengxiaolong' }).unless({ path: [/^\/login\/to/] }));
+app.use(
+  KoaJwt({ secret: 'dengxiaolong' }).unless({
+    path: [/^\/login\/to/, /^\/login$/, /^\/book(|\/)$/],
+  })
+);
 app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(3000);
