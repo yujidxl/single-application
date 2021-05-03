@@ -13,6 +13,7 @@ app.use(
 app.use(KoaBody());
 app.use(async (ctx, next) => {
   return next().catch((err) => {
+    console.log(err);
     if (401 == err.status) {
       ctx.status = 401;
       ctx.body = {
@@ -26,7 +27,7 @@ app.use(async (ctx, next) => {
 });
 app.use(
   KoaJwt({ secret: 'dengxiaolong' }).unless({
-    path: [/^\/login\/to/, /^\/login$/, /^\/book(|\/)$/],
+    path: [/^\/login\/to/, /^\/login(|\/)$/, /^\/book(|\/)$/],
   })
 );
 app.use(router.routes()).use(router.allowedMethods());
